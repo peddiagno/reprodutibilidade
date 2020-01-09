@@ -44,11 +44,11 @@ measures_table.loc[len(measures_table)] = cvs
 measures_table.insert(0,"Exame",identifiers)
 measures_table = measures_table.round(2)
 
-xy = ["x","y"]
+plt.figure(figsize=(16, 12))
 
 for plt_file in pulses_plt_files:
     histo_plt = [0] * 256
-    pulses_plt = pd.read_csv(plt_file,na_values = "?", comment='\t', names=['x','y'],
+    pulses_plt = pd.read_csv(plt_file,na_values = "?", comment='\t', names=['y','x'],
                               sep=",", skipinitialspace=True)
     for i in pulses_plt['x']:
         histo_plt[i] = histo_plt[i] + 1
@@ -59,11 +59,11 @@ plt.ylabel('Quantidade')
 plt.title('Histograma de plaquetas')
 plt.savefig(results_path + '/histoplt.png')
 
-plt.figure()
+plt.figure(figsize=(16, 12))
 
 for wbc_file in pulses_wbc_files:
     histo_wbc = [0] * 256
-    pulses_wbc = pd.read_csv(wbc_file,na_values = "?", comment='\t', names=['x','y'],
+    pulses_wbc = pd.read_csv(wbc_file,na_values = "?", comment='\t', names=['y','x'],
                               sep=",", skipinitialspace=True)
     for i in pulses_wbc['x']:
         histo_wbc[i] = histo_wbc[i] + 1
@@ -73,14 +73,16 @@ plt.xlabel('Amplitude de pulsos')
 plt.ylabel('Quantidade')
 plt.title('Histograma de leucocitos')
 plt.savefig(results_path + '/histowbc.png')
-plt.figure()
+
+plt.figure(figsize=(16, 12))
+
 for rbc_file in pulses_rbc_files:
     histo_rbc = [0] * 256
-    pulses_rbc = pd.read_csv(rbc_file,na_values = "?", comment='\t', names=['x','y'],
+    pulses_rbc = pd.read_csv(rbc_file,na_values = "?", comment='\t', names=['y','x'],
                               sep=",", skipinitialspace=True)
     for i in pulses_rbc['x']:
         histo_rbc[i] = histo_rbc[i] + 1
-    plt.plot(histo_wbc)
+    plt.plot(histo_rbc)
 
 plt.xlabel('Amplitude de pulsos')
 plt.ylabel('Quantidade')
@@ -88,8 +90,5 @@ plt.title('Histograma de eritrocitos')
 plt.savefig(results_path + '/historbc.png')
 
 indexing_limit = len(measures_table.T)
-    
+
 measures_table.to_csv(results_path + "/" + measures[0], index=False)
-
-
-    
