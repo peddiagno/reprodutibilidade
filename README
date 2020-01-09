@@ -1,0 +1,6 @@
+O Icounter na versão DEBUG cria diretório /mnt/database diretórios com nomenclaturas no formato DATA-ID, onde DATA é a data
+na qual a reprodutibilidade foi realizada e ID é o ID do paciente definido na tela de paciente do equipamento.
+Nesse diretório haverá arquivos com terminações plt.csv, wbc.csv, rbc.csv e results.csv. Todos esses arquivos devem ser
+copiados para a pasta "medidas". 
+Ao executar o script reprodutibilidade.sh serão gerados na pasta "resultados" os histogramas sobrepostos obtidos nos exames
+e haverá uma planilha na qual já estarão calculadas as médias, desvios padrões e coeficientes de variações de cada parâmetro.
