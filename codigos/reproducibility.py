@@ -1,11 +1,11 @@
-import matplotlib.pyplot as plt
 import pandas as pd
 import os
 import glob
 import statistics
+import painter as pnt
 
-data_path = 'medidas'
-results_path = '../resultados'
+data_path = 'dados/'
+results_path = '../resultados/'
 extension="csv"
 os.chdir(data_path)
 
@@ -26,15 +26,17 @@ sds = []
 means = []
 cvs = []
 
+basename = measures[0][:10]
+
 for j in headers:
     sd = statistics.stdev(measures_table[j])
     mean = statistics.mean(measures_table[j])
-    variation_coefficient = 100 * sd / mean
+    variation_coefficient = 100 * sd / mean if mean != 0 else 0
     sds.append(sd)
     means.append(mean)
     cvs.append(variation_coefficient)      
 
-identifiers = range(len(measures_table))
+identifiers = list(range(len(measures_table)))
 identifiers = identifiers + ["DP", "Media", "CV"]
 
 measures_table.loc[len(measures_table)] = sds
@@ -44,51 +46,8 @@ measures_table.loc[len(measures_table)] = cvs
 measures_table.insert(0,"Exame",identifiers)
 measures_table = measures_table.round(2)
 
-plt.figure(figsize=(16, 12))
+pnt.create_histogram(pulses_plt_files,"plt",basename,results_path)
+pnt.create_histogram(pulses_wbc_files,"wbc",basename,results_path)
+pnt.create_histogram(pulses_rbc_files,"rbc",basename,results_path)
 
-for plt_file in pulses_plt_files:
-    histo_plt = [0] * 256
-    pulses_plt = pd.read_csv(plt_file,na_values = "?", comment='\t', names=['y','x'],
-                              sep=",", skipinitialspace=True)
-    for i in pulses_plt['x']:
-        histo_plt[i] = histo_plt[i] + 1
-    plt.plot(histo_plt)
-
-plt.xlabel('Amplitude de pulsos')
-plt.ylabel('Quantidade')
-plt.title('Histograma de plaquetas')
-plt.savefig(results_path + '/histoplt.png')
-
-plt.figure(figsize=(16, 12))
-
-for wbc_file in pulses_wbc_files:
-    histo_wbc = [0] * 256
-    pulses_wbc = pd.read_csv(wbc_file,na_values = "?", comment='\t', names=['y','x'],
-                              sep=",", skipinitialspace=True)
-    for i in pulses_wbc['x']:
-        histo_wbc[i] = histo_wbc[i] + 1
-    plt.plot(histo_wbc)
-
-plt.xlabel('Amplitude de pulsos')
-plt.ylabel('Quantidade')
-plt.title('Histograma de leucocitos')
-plt.savefig(results_path + '/histowbc.png')
-
-plt.figure(figsize=(16, 12))
-
-for rbc_file in pulses_rbc_files:
-    histo_rbc = [0] * 256
-    pulses_rbc = pd.read_csv(rbc_file,na_values = "?", comment='\t', names=['y','x'],
-                              sep=",", skipinitialspace=True)
-    for i in pulses_rbc['x']:
-        histo_rbc[i] = histo_rbc[i] + 1
-    plt.plot(histo_rbc)
-
-plt.xlabel('Amplitude de pulsos')
-plt.ylabel('Quantidade')
-plt.title('Histograma de eritrocitos')
-plt.savefig(results_path + '/historbc.png')
-
-indexing_limit = len(measures_table.T)
-
-measures_table.to_csv(results_path + "/" + measures[0], index=False)
+measures_table.to_csv(results_path + measures[0], index=False)
