@@ -15,8 +15,8 @@ for data_directory in data_directories:
     pulses_wbc_files = glob.glob(data_directory + '*wbc.csv')
     pulses_rbc_files = glob.glob(data_directory + '*rbc.csv')
     if not measures:
-        print("Arquivo de resultados nao encontrado")
-        next
+        print("Arquivo de resultados nao encontrado no diretorio {}".format(basename))
+        continue       
     
     results_path = base_results_path + basename + "/"
     try: 
