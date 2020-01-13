@@ -5,14 +5,16 @@ def reproducibility_table(exams_path, basename, results_path):
             sep=",", skipinitialspace=True )
 
     results_order = ["wbc","lynp","monp","midp","neup","eosp","rbc","hgb",
-            "hct","mcv","mch","mchc","rdw_cv","rdw_sd","plt",
-            "mpv","pct","pdw","plcr"]
+                    "hct","mcv","mch","mchc","rdw_cv","rdw_sd","plt",
+                    "mpv","pct","pdw","plcr"]
 
     headers = measures_table.columns
     sds = []
     means = []
     cvs = []
-
+    if len(measures_table) < 2:
+        print("Somente um exame no diretorio, nao e possivel obter as estatisticas")
+        return
     for j in headers:
         sd = statistics.stdev(measures_table[j])
         mean = statistics.mean(measures_table[j])
