@@ -3,7 +3,6 @@ import glob
 import painter as pnt
 import reproducibility as rpd
 
-os.chdir("../")
 data_path = 'dados/'
 base_results_path = 'resultados/'
 
