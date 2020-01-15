@@ -4,19 +4,13 @@ def reproducibility_table(exams_path, basename, results_path):
     measures_table = pd.read_csv(exams_path, na_values = "?", comment='\t',
             sep=",", skipinitialspace=True )
 
-    results_order = ["wbc","lynp","monp","midp","neup","eosp","rbc","hgb",
-                    "hct","mcv","mch","mchc","rdw_cv","rdw_sd","plt",
-                    "mpv","pct","pdw","plcr"]
-
     headers = measures_table.columns
     sds = []
     means = []
     cvs = []
-    if len(measures_table) < 2:
-        print("Somente um exame no diretorio, nao e possivel obter as estatisticas")
-        return
+
     for j in headers:
-        sd = statistics.stdev(measures_table[j])
+        sd = statistics.stdev(measures_table[j]) if len(measures_table) > 1 else 0
         mean = statistics.mean(measures_table[j])
         variation_coefficient = 100 * sd / mean if mean != 0 else 0
         sds.append(sd)
@@ -32,4 +26,13 @@ def reproducibility_table(exams_path, basename, results_path):
 
     measures_table.insert(0,"Exame",identifiers)
     measures_table = measures_table.round(2)
-    measures_table.to_csv(results_path + basename + ".csv", index=False)
+    
+    writer = pd.ExcelWriter(results_path + basename + ".xlsx", engine = 'xlsxwriter')
+    
+    measures_table.to_excel(writer,startcol = 0, startrow = 1, index=False)
+    worksheet = writer.sheets['Sheet1']
+    workbook = writer.book
+    title_format = workbook.add_format({'bold': True})
+    worksheet.write('I1',"Reprodutibilidade {}".format(basename),title_format)   
+    
+    writer.save()

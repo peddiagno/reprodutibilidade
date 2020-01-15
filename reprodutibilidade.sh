@@ -1,2 +1,2 @@
 #!/bin/sh
-xterm -e python codigos/main.py
+xterm -e python codigos/main.py "reproducibility"
