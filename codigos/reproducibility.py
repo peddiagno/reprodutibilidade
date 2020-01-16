@@ -27,12 +27,5 @@ def reproducibility_table(exams_path, basename, results_path):
     measures_table.insert(0,"Exame",identifiers)
     measures_table = measures_table.round(2)
     
-    writer = pd.ExcelWriter(results_path + basename + ".xlsx", engine = 'xlsxwriter')
-    
-    measures_table.to_excel(writer,startcol = 0, startrow = 1, index=False)
-    worksheet = writer.sheets['Sheet1']
-    workbook = writer.book
-    title_format = workbook.add_format({'bold': True})
-    worksheet.write('I1',"Reprodutibilidade {}".format(basename),title_format)   
-    
-    writer.save()
+    return(measures_table)
+
