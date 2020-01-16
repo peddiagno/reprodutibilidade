@@ -10,7 +10,7 @@ def save_sheet(dataframe, excel_writer, sheet_name, title, save_now):
     workbook = excel_writer.book
     title_format = workbook.add_format({'bold': True}) 
     dataframe.to_excel(excel_writer, sheet_name=sheet_name,
-                   startcol = 0, startrow = 1, index = False)
+                   startcol = 0, startrow = 2, index = False)
     worksheet = excel_writer.sheets[sheet_name]
     worksheet.write('I1', title, title_format)
     if save_now: writer.save() 
@@ -80,6 +80,37 @@ elif selector == "correlation":
     save_sheet( exam_tables["machine1"], writer, serial_number1,
                "Exames {}".format(serial_number1), False )
     save_sheet( exam_tables["correlation"], writer, "Correlacao",
-               "Correlacao entre os equipamentos", True )
+               "Correlacao entre os equipamentos", False )
+    
+    worksheet = writer.sheets["Correlacao"]
+    workbook = writer.book
+    excelent_format = workbook.add_format({'font_color': '14a600', 'bold': True })
+    good_format = workbook.add_format({'font_color': '#0000ff', 'bold': True })
+    regular_format = workbook.add_format({'font_color': 'black', 'bold': True })
+    bad_format = workbook.add_format({'font_color': 'red', 'bold': True })
+                                           
+    worksheet.conditional_format('A4:Z4', {'type':     'cell',
+                                        'criteria': '>=',
+                                        'value':    0.95,
+                                        'format':   excelent_format})
+
+    worksheet.conditional_format('A4:Z4', {'type':     'cell',
+                                        'criteria': 'between',
+                                        'minimum':   0.9,
+                                        'maximum':   0.95,
+                                        'format':   good_format})
+    worksheet.conditional_format('A4:Z4', {'type':     'cell',
+                                        'criteria': 'between',
+                                        'minimum':   0.9,
+                                        'maximum':   0.75,
+                                        'format':   regular_format})
+    worksheet.conditional_format('A4:Z4', {'type':     'cell',
+                                        'criteria': '<',
+                                        'value':    0.75,
+                                        'format':   bad_format})
+    writer.save()
+    
+    
+    
         
         
