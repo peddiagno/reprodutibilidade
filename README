@@ -1,3 +1,4 @@
+Gerador de tabelas de reprodutibilidade e correlação dos equipamentos Icounter 3D e 5D
 O Icounter na versão DEBUG cria diretório /mnt/database diretórios com nomenclaturas no formato DATA-ID, onde DATA é a data
 na qual a reprodutibilidade foi realizada e ID é o ID do paciente definido na tela de paciente do equipamento.
 Nesse diretório haverá arquivos com terminações plt.csv, wbc.csv, rbc.csv e results.csv. Todos esses arquivos devem ser
